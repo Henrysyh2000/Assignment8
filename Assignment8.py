@@ -411,9 +411,15 @@ class BinarySearchTree(Tree):
         :return: List[Int] -- a list of values, in reversed sorted order (largest to smallest)
         """
         # Task 1
-        pass
-
-
+        node = self.root()
+        lst = self.lts_helper(node, [])
+        return lst
+    def lts_helper(self, node, lst):
+        if node is not None:
+            lst = self.lts_helper(node._right, lst)
+            lst.append(node._element)
+            lst = self.lts_helper(node._left, lst)
+        return lst
 
 
 
@@ -427,7 +433,21 @@ class BinarySearchTree(Tree):
         :return: TreeNode -- Return the node having value v, or last node searched
         """
         # Task 2, modify the code below (placeholder code)
-        return self._root
+        start = node
+        while start:
+            if start._element == v:
+                return start
+            elif start._element < v:
+                if start._right:
+                    start = start._right
+                else:
+                    break
+            else:
+                if start._left:    
+                    start = start._left
+                else:
+                    break
+        return start
 
 
 
@@ -442,7 +462,11 @@ class BinarySearchTree(Tree):
         :return: the correct Node object.
         """
         # Task 3, modify the code below (placeholder code)
-        return self._root
+        lst = list(self.inorder())
+        if k <= len(lst):
+            return lst[-k]
+        else:
+            return lst[0]
 
     def LCA(self, node1, node2):
         """
@@ -452,8 +476,20 @@ class BinarySearchTree(Tree):
         :return: TreeNode -- the lowest common ancestor node of node1 and node2.
         """
         # Task 4, modify the code below (placeholder code)
-        return self._root
-
+        if node1._parent is node2:
+            return node2
+        elif node2._parent is node1:
+            return node1
+        else:
+            start = self.root()
+            while start._element > max(node1._element, node2._element):
+                start = start._left
+            while start._element < min(node1._element, node2._element):
+                start = start._right
+            return start
+        
+            
+            
 
 
 def pretty_print(tree):
